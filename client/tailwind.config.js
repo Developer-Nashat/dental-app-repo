@@ -1,21 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line no-undef
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  theme: {
-    // colors: {
-    //   transparent: 'transparent',
-    //   current: 'currentColor',
-    //   white: '#ffffff',
-    //   purple: '#3f3cbb',
-    //   midnight: '#121063',
-    //   metal: '#565584',
-    //   tahiti: '#3ab7bf',
-    //   silver: '#ecebff',
-    //   'bubble-gum': '#ff77e9',
-    //   bermuda: '#78dcca'
-    // },
-    extend: {}
-  },
-  plugins: []
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}', './node_modules/preline/preline.js'],
+  plugins: [require('preline/plugin')]
 }

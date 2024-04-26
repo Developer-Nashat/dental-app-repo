@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 // import './assets/main.css'
 import './assets/app.css'
+import 'preline/preline'
 
 import { createApp } from 'vue'
 import App from './App.vue'

@@ -23,27 +23,28 @@ const hasActiveChild = computed(() => {
 
 <template>
     <Router-link v-if="!item.children.length"
-        :class="['group flex rounded-md items-center text-orange-200 hover:text-orange-300 py-2 px-3 text-sm', 'hover:bg-indigo-950 cursor-pointer', item.active ? 'text-orange-300 font-bold' : 'text-orange-200 font-medium']"
+        :class="['group flex rounded-md items-center hover:text-gray-200 py-2 px-3 text-sm', 'hover:bg-indigo-950 cursor-pointer', item.active ? 'text-white font-bold' : 'text-gray-400 font-medium']"
         :to="`${item.href}`">
 
-        <component :class="['w-6 h-6 shrink-0 ml-2 text-orange-200 group-hover:text-orange-300'
-        , item.active ? 'text-orange-100 font-bold' : 'text-orange-200 font-medium']" :is="heroIcons[item.icon]"
-            v-if="item.icon"></component>
+        <component :class="['w-6 h-6 shrink-0 ml-2 group-hover:text-gray-300'
+        , item.active ? 'text-white font-bold' : 'text-gray-400 font-medium']" :is="heroIcons[item.icon]"
+            v-if="item.icon">
+        </component>
         <span> {{ item.label }}</span>
 
     </Router-link>
 
     <Disclosure v-else v-slot="{ open }" :default-open="hasActiveChild">
         <DisclosureButton
-            :class="['group text-right text-orange-200 hover:text-orange-300 flex w-full rounded-md items-center py-2 px-3 text-sm hover:bg-indigo-950', open ? 'font-semibold text-orange-300 ' : 'font-medium text-orange-200']">
+            :class="['group text-right hover:text-gray-300 flex w-full rounded-md items-center py-2 px-3 text-sm hover:bg-indigo-950', open ? 'font-semibold text-white hover:text-gray-100 ' : 'font-medium text-gray-400']">
             <component
-                :class="['w-6 h-6 shrink-0 ml-2 text-orange-200 group-hover:text-orange-300', open ? 'text-orange-400' : 'text-orange-200']"
+                :class="['w-6 h-6 shrink-0 ml-2 ', open ? 'text-white group-hover:text-gray-100' : 'text-gray-400 group-hover:text-gray-400']"
                 :is="heroIcons[item.icon]" v-if="item.icon"></component>
             <span class="flex-1"> {{ item.label }}</span>
             <router-link :to="`${item.href}`"></router-link>
 
             <heroIcons.ChevronDownIcon class="transition-all duration-1000 overflow-hidden"
-                :class="['w-6 h-6 shrink-0', open ? '-rotate-180 text-orange-300' : 'text-orange-200']" />
+                :class="['w-6 h-6 shrink-0', open ? '-rotate-180 text-white' : 'text-gray-200']" />
         </DisclosureButton>
 
         <Transition name="slide-fade" mode="out-in">
@@ -54,3 +55,21 @@ const hasActiveChild = computed(() => {
         </Transition>
     </Disclosure>
 </template>
+
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease-in-out;
+    /* transition-delay: 0.2s; */
+}
+
+.slide-fade-leave-active {
+    transition: all 0.3s;
+    /* transition-delay: 0.2s; */
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+</style>

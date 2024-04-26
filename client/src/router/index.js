@@ -7,7 +7,7 @@ import authRoutes from './auth.route'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  linkActiveClass: 'text-orange-300 bg-indigo-950 mx-2 my-1',
+  linkActiveClass: 'text-white bg-indigo-950 mx-2 my-1',
   routes: [
     { path: '/', redirect: '/dental/' },
     { ...appRoutes },
