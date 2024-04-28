@@ -9,45 +9,40 @@ import { Form, Field, ErrorMessage } from 'vee-validate';
 import ProblemCatalogService from '../../services/ProblemCatalog.service';
 import * as yup from 'yup'
 
-onMounted(async () => {
-    window.HSStaticMethods.autoInit()
-
-    ProblemCatalog.value = await ProblemCatalogService.getAllProblemsCatalogs();
-
-    console.log(ProblemCatalog)
-});
-
 const title = ref('إضافة مشكلة')
 const searchFilter = ref('');
 const showModal = ref(false);
-const ProblemCatalog = ref({});
+const ProblemCatalogs = ref({});
+const problemCatalogName = ref('');
+
+onMounted(async () => {
+    window.HSStaticMethods.autoInit()
+
+    ProblemCatalogs.value = await ProblemCatalogService.getAllProblemsCatalogs();
+
+
+});
 
 const showDialog = (t) => {
     showModal.value = true;
     title.value = t
 }
-// const handleProblemCat = (isAdd) => {
-//     if (isAdd) {
+const handleProblemCat = (isAdd) => {
+    if (isAdd) {
+        const result = ProblemCatalogService.insertProblemCatalog(problemCatalogName)
 
-//     }
-// }
+        console.log(result)
+    }
+}
 
 const columns = [
     {
-        key: "id",
-        label: "Id"
+        key: "ProblemCatalogID",
+        label: "رقم تصنيف المشكلة"
     },
     {
-        key: "name",
-        label: "Name"
-    },
-    {
-        key: "description",
-        label: "Description"
-    },
-    {
-        key: "price",
-        label: "Price"
+        key: "ProblemCatalogName",
+        label: "تصنيف المشكلة"
     }
 ]
 const entities = [
@@ -56,19 +51,16 @@ const entities = [
     { id: '03', name: 'Ice Coffee', description: 'Ice Coffee...', price: '743,4' }
 ]
 
-const problemName = ref('');
-
-
 const schema = yup.object().shape({
     problemName: yup.string().required('يجب ان تدخل اسم المشكلة'),
 });
 
 const filteredData = computed(() => {
     if (searchFilter.value !== '') {
-        return entities.filter(entity => entity.name.toLowerCase().includes(searchFilter.value))
+        return ProblemCatalogs.value.filter(ProblemCatalog => ProblemCatalog.ProblemCatalogName.toLowerCase().includes(searchFilter.value))
     }
 
-    return entities;
+    return ProblemCatalogs.value;
 });
 
 const handleSearch = (search) => {
@@ -93,18 +85,16 @@ const onEdit = (edit) => {
                         </h3>
                     </template>
                     <template #body>
-                        <Form @submit="handleProblemCat" :validation-schema="schema">
+                        <Form @submit="handleProblemCat(true)" :validation-schema="schema">
                             <div class="mb-4 sm:mb-8">
                                 <label for="problem-name" class="block mb-2 text-sm font-medium dark:text-white">تصنيف
                                     المشكلة</label>
-                                <Field type="text" id="problem-name" v-model="problemName" name="problemName"
+                                <Field type="text" id="problem-name" v-model="problemCatalogName"
+                                    name="problemCatalogName"
                                     class="py-3 px-4 block w-full border bg-white focus:outline-none  border-indigo-300 rounded-lg text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
                                     placeholder="تصنيف المشكلة" />
                                 <ErrorMessage name="problem-name"
-                                    class="mt-2 text-sm text-red-500 dark:text-neutral-500" />
-                                <p class="mt-2 pr-2 text-sm text-gray-500 dark:text-neutral-500"
-                                    id="hs-input-helper-text">
-                                    We'll never share your details.</p>
+                                    class="mt-2 pr-2 text-sm text-red-500 dark:text-neutral-500" />
                             </div>
                         </Form>
                     </template>

@@ -12,4 +12,13 @@ ProblemCatalog.getAllProblemCatalogs = async () => {
   return result;
 };
 
+ProblemCatalog.InsertProblemCatalog = async (parmater) => {
+  const result = await pool.query(
+    `CALL "sp_InsertProblemCatalog"($1)`,
+    parmater
+  );
+
+  return result;
+};
+
 module.exports = ProblemCatalog;
