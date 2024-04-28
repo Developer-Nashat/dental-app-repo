@@ -6,6 +6,7 @@ const corsOptions = require("./config/corsOption");
 require("dotenv").config();
 
 const userRouter = require("./routers/UserRouter");
+const ProblemCatalogRoute = require("./routers/ProblemCatalogRoute");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(userRouter);
+app.use(ProblemCatalogRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

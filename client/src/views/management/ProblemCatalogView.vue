@@ -1,27 +1,36 @@
 <script setup>
 import DataTable from '@/components/DataTable.vue'
-import Modal from '@/components/Modal.vue'
+import Modal from '@/components/modals/Modal.vue'
 import ButtonAdd from '@/components/buttons/ButtonAdd.vue'
 
 import { onMounted, computed, ref } from 'vue';
 import { HSCopyMarkup as HSStaticMethods } from "preline";
 import { Form, Field, ErrorMessage } from 'vee-validate';
+import ProblemCatalogService from '../../services/ProblemCatalog.service';
 import * as yup from 'yup'
 
-onMounted(() => {
+onMounted(async () => {
     window.HSStaticMethods.autoInit()
+
+    ProblemCatalog.value = await ProblemCatalogService.getAllProblemsCatalogs();
+
+    console.log(ProblemCatalog)
 });
 
 const title = ref('إضافة مشكلة')
 const searchFilter = ref('');
 const showModal = ref(false);
-
-const ModelId = ref('#problem-model');
+const ProblemCatalog = ref({});
 
 const showDialog = (t) => {
     showModal.value = true;
     title.value = t
 }
+// const handleProblemCat = (isAdd) => {
+//     if (isAdd) {
+
+//     }
+// }
 
 const columns = [
     {
@@ -47,13 +56,11 @@ const entities = [
     { id: '03', name: 'Ice Coffee', description: 'Ice Coffee...', price: '743,4' }
 ]
 
-const name = ref('');
-const descraption = ref('');
-const price = ref(0.0);
+const problemName = ref('');
 
 
 const schema = yup.object().shape({
-    name: yup.string().required('يجب ان تدخل اسم المشكلة'),
+    problemName: yup.string().required('يجب ان تدخل اسم المشكلة'),
 });
 
 const filteredData = computed(() => {
@@ -81,10 +88,25 @@ const onEdit = (edit) => {
                 <!-- use the modal component, pass in the prop -->
                 <modal :modalId="'#problem-modal'" id="problem-modal" :show="showModal" @close="showModal = false">
                     <template #title>
-                        {{ title }}
+                        <h3 class="font-bold text-gray-800 dark:text-white">
+                            {{ title }}
+                        </h3>
                     </template>
                     <template #body>
-                        <h3>Data</h3>
+                        <Form @submit="handleProblemCat" :validation-schema="schema">
+                            <div class="mb-4 sm:mb-8">
+                                <label for="problem-name" class="block mb-2 text-sm font-medium dark:text-white">تصنيف
+                                    المشكلة</label>
+                                <Field type="text" id="problem-name" v-model="problemName" name="problemName"
+                                    class="py-3 px-4 block w-full border bg-white focus:outline-none  border-indigo-300 rounded-lg text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="تصنيف المشكلة" />
+                                <ErrorMessage name="problem-name"
+                                    class="mt-2 text-sm text-red-500 dark:text-neutral-500" />
+                                <p class="mt-2 pr-2 text-sm text-gray-500 dark:text-neutral-500"
+                                    id="hs-input-helper-text">
+                                    We'll never share your details.</p>
+                            </div>
+                        </Form>
                     </template>
                 </modal>
             </Teleport>
