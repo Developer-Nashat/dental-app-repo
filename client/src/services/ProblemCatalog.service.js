@@ -13,7 +13,18 @@ class ProblemCatalogService {
     return axios
       .post(`${API_URL}problemCatalog`, { problemCatalogName: problemCatalogName })
       .then((response) => {
-        return response.data
+        return response
+      })
+  }
+
+  UpdateProblemCatalog(problemCatalogName, problemCatalogId) {
+    return axios
+      .put(`${API_URL}problemCatalog`, {
+        problemCatalogName: problemCatalogName,
+        problemCatalogId: problemCatalogId
+      })
+      .then((response) => {
+        return response
       })
   }
 }

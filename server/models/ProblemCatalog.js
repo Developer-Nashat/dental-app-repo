@@ -21,4 +21,13 @@ ProblemCatalog.InsertProblemCatalog = async (parmater) => {
   return result;
 };
 
+ProblemCatalog.UpdateProblemCatalog = async (parmater) => {
+  const result = await pool.query(
+    `CALL "sp_UpdateProblemCatalog"($1, $2)`,
+    parmater
+  );
+
+  return result;
+};
+
 module.exports = ProblemCatalog;

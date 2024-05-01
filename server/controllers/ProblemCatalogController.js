@@ -23,7 +23,24 @@ ProblemCatalogController.InsertProblemCatalog = async (req, res) => {
     await problemCatalog.InsertProblemCatalog([problemCatalogName]);
     return res.status(201).json({ message: "تم إضافة تصنيف المشكلة بنجاح.!" });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message, errorCode: err.code });
+  }
+};
+ProblemCatalogController.UpdateProblemCatalog = async (req, res) => {
+  try {
+    const { problemCatalogName, problemCatalogId } = req.body;
+
+    if (!problemCatalogName) {
+      return res.status(400).json({ message: "يجب ان تدخل تصنيف المشكلة" });
+    }
+
+    await problemCatalog.UpdateProblemCatalog([
+      problemCatalogName,
+      problemCatalogId,
+    ]);
+    return res.status(201).json({ message: "تم تعديل تصنيف المشكلة بنجاح.!" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message, errorCode: err.code });
   }
 };
 

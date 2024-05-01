@@ -26,6 +26,7 @@ import * as heroIcons from "@heroicons/vue/24/outline"
 const emit = defineEmits(['onEdit', 'onDelete','search'])
 
 const onEdit = (entity) => {
+    // console.log(entity)
     emit('onEdit', entity);
 }
 
@@ -68,7 +69,7 @@ const handleSearch = (search) => {
             </slot>
             <slot name="column_actions" :entity="entity" v-if="isActions">
                 <td class="flex items-center justify-end px-4 py-3">
-                    <button :data-hs-overlay="`${modalId}`" class="mx-3 active:bg-violet-100 h-7 w-7 rounded-full" @click="onEdit(entity)">
+                    <button :data-hs-overlay="`${modalId}`" class="mx-3 active:bg-violet-100 h-7 w-7 rounded-full" @click="onEdit(index)">
                         <heroIcons.PencilIcon class="px-1 h-7 w-7 rounded-full border cursor-pointer text-violet-6500 border-violet-500 hover:text-violet-700 hover:border-violet-700 active:border-violet-700 active:border-2"> </heroIcons.PencilIcon>
                     </button>
                  <button class="mx-3 active:bg-red-100 h-7 w-7 rounded-full " @click="onDelete(entity)">

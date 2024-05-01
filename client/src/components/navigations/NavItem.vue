@@ -14,7 +14,7 @@ const props = defineProps({
 
 const hasActiveChild = computed(() => {
     function hasActiveItem(items) {
-        return items.some(item => item.active || hasActiveItem(item.children))
+        return items.some(item => item.active && hasActiveItem(item.children))
     }
 
     return hasActiveItem(props.item.children)

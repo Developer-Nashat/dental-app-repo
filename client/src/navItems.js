@@ -16,12 +16,12 @@ const navItems = [
     active: false,
     label: 'Media',
     children: [
-      { href: '#', active: false, label: 'Library', children: [], icon: null },
+      { href: '/Library', active: false, label: 'Library', children: [], icon: null },
       {
         href: '#',
         active: false,
         label: 'Add New',
-        children: [{ href: '#', active: true, label: 'Third Level', children: [], icon: null }],
+        children: [{ href: '/add', active: true, label: 'Third Level', children: [], icon: null }],
         icon: 'HomeIcon'
       }
     ],

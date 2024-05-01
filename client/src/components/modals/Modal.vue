@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <!-- eslint-disable vue/multi-word-component-names -->
 
 <script setup>
@@ -7,14 +8,23 @@ import { HSCopyMarkup as HSStaticMethods } from "preline";
 onMounted(() => {
     window.HSStaticMethods.autoInit()
 });
+
 defineProps({
     show: Boolean,
+
     modalId: {
         required: false,
         default: '',
         type: String
-    }
+    },
 })
+
+const emit = defineEmits(['modifiedData'])
+
+const modifiedData = () => {
+
+    emit('modifiedData');
+};
 </script>
 
 <template>
@@ -25,18 +35,15 @@ defineProps({
             <div
                 class="w-full max-h-full overflow-hidden flex flex-col bg-gray-100 border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
                 <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-                    <!-- <h3 class="font-bold text-gray-800 dark:text-white">
-                        Modal title
-                    </h3> -->
                     <slot name='title'>Default Title</slot>
 
                     <button type="button" @click="$emit('close')"
                         class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
                         :data-hs-overlay="`${modalId}`">
                         <span class="sr-only">Close</span>
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="flex-shrink-0 size-4 text-red-500 hover:text-red-600"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 6 6 18"></path>
                             <path d="m6 6 12 12"></path>
                         </svg>
@@ -46,19 +53,14 @@ defineProps({
                     <!-- <p class="mt-1 text-gray-800 dark:text-neutral-400">
                         This is a wider card with supporting text below as a natural lead-in to additional content.
                     </p> -->
-
-                    <slot name="body">Default Body</slot>
+                    <slot name="body">
+                        Default Body
+                    </slot>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
-                    <button type="button" @click="$emit('close')"
-                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
-                        :data-hs-overlay="`${modalId}`">
-                        إلغاء
-                    </button>
-                    <button type="submit"
-                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-                        حفظ
-                    </button>
+                    <slot name="footer">
+
+                    </slot>
                 </div>
             </div>
         </div>

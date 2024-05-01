@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
 import DataTable from '@/components/DataTable.vue'
 import Modal from '@/components/modals/Modal.vue'
@@ -8,30 +9,43 @@ import { HSCopyMarkup as HSStaticMethods } from "preline";
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import ProblemCatalogService from '../../services/ProblemCatalog.service';
 import * as yup from 'yup'
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 const title = ref('إضافة مشكلة')
 const searchFilter = ref('');
 const showModal = ref(false);
 const ProblemCatalogs = ref({});
+const problemCatalogId = ref(0);
 const problemCatalogName = ref('');
+let isAdd = false;
 
 onMounted(async () => {
     window.HSStaticMethods.autoInit()
 
     ProblemCatalogs.value = await ProblemCatalogService.getAllProblemsCatalogs();
-
-
 });
 
 const showDialog = (t) => {
     showModal.value = true;
     title.value = t
+    isAdd = true
 }
-const handleProblemCat = (isAdd) => {
+const handleProblemCat = async () => {
     if (isAdd) {
-        const result = ProblemCatalogService.insertProblemCatalog(problemCatalogName)
-
-        console.log(result)
+        await ProblemCatalogService.insertProblemCatalog(problemCatalogName.value).then((response) => {
+            toast.success(response.data.message)
+            isAdd = false;
+        }, (error) => {
+            toast.error(error.response.data.message)
+        })
+    } else {
+        await ProblemCatalogService.UpdateProblemCatalog(problemCatalogName.value, problemCatalogId.value).then((response) => {
+            toast.success(response.data.message)
+        }, (error) => {
+            toast.error(error.response.data.message)
+        })
     }
 }
 
@@ -45,14 +59,9 @@ const columns = [
         label: "تصنيف المشكلة"
     }
 ]
-const entities = [
-    { id: '01', name: 'Coffee', description: 'Coffee...', price: '433.03' },
-    { id: '02', name: 'Chocolate', description: 'Chocolate...', price: '344.44' },
-    { id: '03', name: 'Ice Coffee', description: 'Ice Coffee...', price: '743,4' }
-]
 
 const schema = yup.object().shape({
-    problemName: yup.string().required('يجب ان تدخل اسم المشكلة'),
+    problemCatalogName: yup.string().required('يجب ان تدخل اسم المشكلة'),
 });
 
 const filteredData = computed(() => {
@@ -67,7 +76,10 @@ const handleSearch = (search) => {
     searchFilter.value = search;
 }
 
-const onEdit = (edit) => {
+const onEdit = (index) => {
+    isAdd = false;
+    problemCatalogId.value = ProblemCatalogs.value[index].ProblemCatalogID;
+    problemCatalogName.value = ProblemCatalogs.value[index].ProblemCatalogName;
 }
 </script>
 
@@ -78,25 +90,36 @@ const onEdit = (edit) => {
 
             <Teleport to="body">
                 <!-- use the modal component, pass in the prop -->
-                <modal :modalId="'#problem-modal'" id="problem-modal" :show="showModal" @close="showModal = false">
+                <modal :modalId="'#problem-modal'" id="problem-modal" :show="showModal" @close="showModal = false"
+                    @modified-data="handleProblemCat">
                     <template #title>
                         <h3 class="font-bold text-gray-800 dark:text-white">
                             {{ title }}
                         </h3>
                     </template>
                     <template #body>
-                        <Form @submit="handleProblemCat(true)" :validation-schema="schema">
-                            <div class="mb-4 sm:mb-8">
-                                <label for="problem-name" class="block mb-2 text-sm font-medium dark:text-white">تصنيف
+                        <div class="mb-4 sm:mb-8">
+                            <Form @submit="handleProblemCat" :validation-schema="schema">
+                                <label for="problemCatalogName"
+                                    class="block mb-2 text-sm font-medium dark:text-white">تصنيف
                                     المشكلة</label>
-                                <Field type="text" id="problem-name" v-model="problemCatalogName"
-                                    name="problemCatalogName"
+                                <Field type="text" v-model="problemCatalogName" name="problemCatalogName"
                                     class="py-3 px-4 block w-full border bg-white focus:outline-none  border-indigo-300 rounded-lg text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
                                     placeholder="تصنيف المشكلة" />
-                                <ErrorMessage name="problem-name"
+                                <ErrorMessage name="problemCatalogName"
                                     class="mt-2 pr-2 text-sm text-red-500 dark:text-neutral-500" />
-                            </div>
-                        </Form>
+                            </Form>
+                        </div>
+                    </template> <template #footer>
+                        <button type="button" @click="$emit('close')"
+                            class=" py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-400 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                            data-hs-overlay="#problem-modal">
+                            إلغاء
+                        </button>
+                        <button type="button" @click="handleProblemCat" data-hs-overlay="#problem-modal"
+                            class="py-2 px-8 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none">
+                            حفظ
+                        </button>
                     </template>
                 </modal>
             </Teleport>
