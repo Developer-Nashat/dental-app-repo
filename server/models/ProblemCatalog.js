@@ -30,4 +30,13 @@ ProblemCatalog.UpdateProblemCatalog = async (parmater) => {
   return result;
 };
 
+ProblemCatalog.DeleteProblemCatalog = async (parmater) => {
+  const result = await pool.query(
+    `CALL "sp_DeleteProblemCatalog"($1)`,
+    parmater
+  );
+
+  return result;
+};
+
 module.exports = ProblemCatalog;

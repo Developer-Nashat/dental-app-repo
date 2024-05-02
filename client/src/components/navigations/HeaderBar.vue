@@ -6,7 +6,7 @@ import { sidebar } from '../../stores/sidebarIsOpen';
 </script>
 <template>
     <div
-        class="flex justify-between md:justify-end px-3 items-center md:px-6 md:space-x-6 space-x-3 bg-white border-b shadow-sm h-12">
+        class="flex justify-between md:justify-end px-3 items-center md:px-6 md:space-x-6 space-x-3 bg-white border-b shadow-sm h-12 mr-64">
         <button type="button" value="open Sidebar" @click="sidebar.setIsOpened(true)"
             class="flex-shrink-0 flex items-center justify-center md:hidden">
             <heroIcons.Bars3Icon class="h-6 w-6"></heroIcons.Bars3Icon>
@@ -32,3 +32,20 @@ import { sidebar } from '../../stores/sidebarIsOpen';
         </Menu>
     </div>
 </template>
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease-in-out;
+    /* transition-delay: 0.2s; */
+}
+
+.slide-fade-leave-active {
+    transition: all 0.3s;
+    /* transition-delay: 0.2s; */
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+</style>

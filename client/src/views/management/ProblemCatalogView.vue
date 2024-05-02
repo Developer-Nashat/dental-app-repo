@@ -2,6 +2,7 @@
 <script setup>
 import DataTable from '@/components/DataTable.vue'
 import Modal from '@/components/modals/Modal.vue'
+import DeleteModal from '@/components/modals/DeleteModal.vue';
 import ButtonAdd from '@/components/buttons/ButtonAdd.vue'
 
 import { onMounted, computed, ref } from 'vue';
@@ -19,6 +20,7 @@ const showModal = ref(false);
 const ProblemCatalogs = ref({});
 const problemCatalogId = ref(0);
 const problemCatalogName = ref('');
+const problemCatCount = ref(ProblemCatalogs.value.length)
 let isAdd = false;
 
 onMounted(async () => {
@@ -41,12 +43,24 @@ const handleProblemCat = async () => {
             toast.error(error.response.data.message)
         })
     } else {
-        await ProblemCatalogService.UpdateProblemCatalog(problemCatalogName.value, problemCatalogId.value).then((response) => {
+        await ProblemCatalogService.updateProblemCatalog(problemCatalogName.value, problemCatalogId.value).then((response) => {
             toast.success(response.data.message)
         }, (error) => {
             toast.error(error.response.data.message)
         })
     }
+
+    ProblemCatalogs.value = await ProblemCatalogService.getAllProblemsCatalogs();
+}
+
+const handleDeleteProblemCat = async () => {
+    await ProblemCatalogService.deleteProblemCatalog(problemCatalogId.value).then((response) => {
+        toast.success(response.data.message)
+    }, (error) => {
+        toast.error(error.response.data.message)
+    })
+
+    ProblemCatalogs.value = await ProblemCatalogService.getAllProblemsCatalogs();
 }
 
 const columns = [
@@ -81,12 +95,17 @@ const onEdit = (index) => {
     problemCatalogId.value = ProblemCatalogs.value[index].ProblemCatalogID;
     problemCatalogName.value = ProblemCatalogs.value[index].ProblemCatalogName;
 }
+const onDelete = (index) => {
+    problemCatalogId.value = ProblemCatalogs.value[index].ProblemCatalogID;
+}
 </script>
 
 <template>
     <div>
-        <div class="min-h-screen p-8">
-            <ButtonAdd data-hs-overlay="#problem-modal" @click="showDialog('إضافة مشكلة')" />
+        <div class="min-h-screen p-8 mt-10">
+            <div class="pb-4 pr-1">
+                <ButtonAdd data-hs-overlay="#problem-modal" @click="showDialog('إضافة مشكلة')" />
+            </div>
 
             <Teleport to="body">
                 <!-- use the modal component, pass in the prop -->
@@ -104,13 +123,15 @@ const onEdit = (index) => {
                                     class="block mb-2 text-sm font-medium dark:text-white">تصنيف
                                     المشكلة</label>
                                 <Field type="text" v-model="problemCatalogName" name="problemCatalogName"
+                                    @keyup.enter="$emit('close')"
                                     class="py-3 px-4 block w-full border bg-white focus:outline-none  border-indigo-300 rounded-lg text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
                                     placeholder="تصنيف المشكلة" />
                                 <ErrorMessage name="problemCatalogName"
                                     class="mt-2 pr-2 text-sm text-red-500 dark:text-neutral-500" />
                             </Form>
                         </div>
-                    </template> <template #footer>
+                    </template>
+                    <template #footer>
                         <button type="button" @click="$emit('close')"
                             class=" py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-400 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                             data-hs-overlay="#problem-modal">
@@ -124,10 +145,21 @@ const onEdit = (index) => {
                 </modal>
             </Teleport>
 
-            <h3>Problems List</h3>
+            <Teleport to="body">
+                <!-- use the modal component, pass in the prop -->
+                <DeleteModal :modalId="'#delete-modal'" id="delete-modal" :show="showModal" @close="showModal = false"
+                    @delete-data="handleDeleteProblemCat">
+                    <template #title>
+                        <p>تأكيد الحذف</p>
+                    </template>
+                    <template #body>
+                        <p>هل انت متأكد من أنك تريد حذف تصنيف المشكلة؟</p>
+                    </template>
+                </DeleteModal>
+            </Teleport>
 
-            <DataTable :modalId="'#problem-modal'" :columns="columns" :entities="filteredData" @search="handleSearch"
-                @onEdit="onEdit" @onDelete="onDelete" />
+            <DataTable :modalId="'#problem-modal'" :delModalId="'#delete-modal'" :columns="columns"
+                :entities="filteredData" @search="handleSearch" @onEdit="onEdit" @onDelete="onDelete" />
         </div>
     </div>
 </template>

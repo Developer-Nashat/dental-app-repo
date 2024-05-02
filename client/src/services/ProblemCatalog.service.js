@@ -17,12 +17,20 @@ class ProblemCatalogService {
       })
   }
 
-  UpdateProblemCatalog(problemCatalogName, problemCatalogId) {
+  updateProblemCatalog(problemCatalogName, problemCatalogId) {
     return axios
       .put(`${API_URL}problemCatalog`, {
         problemCatalogName: problemCatalogName,
         problemCatalogId: problemCatalogId
       })
+      .then((response) => {
+        return response
+      })
+  }
+
+  deleteProblemCatalog(problemCatalogId) {
+    return axios
+      .delete(`${API_URL}problemCatalog`, { params: { problemCatalogId: problemCatalogId } })
       .then((response) => {
         return response
       })

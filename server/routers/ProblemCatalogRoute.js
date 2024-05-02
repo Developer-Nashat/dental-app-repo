@@ -5,5 +5,6 @@ const problemCatalogController = require("../controllers/ProblemCatalogControlle
 router.get("/problemCatalog", problemCatalogController.getAllProblemCatalogs);
 router.post("/problemCatalog", problemCatalogController.InsertProblemCatalog);
 router.put("/problemCatalog", problemCatalogController.UpdateProblemCatalog);
+router.delete("/problemCatalog", problemCatalogController.DeleteProblemCatalog);
 
 module.exports = router;

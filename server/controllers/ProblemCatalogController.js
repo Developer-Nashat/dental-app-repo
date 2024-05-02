@@ -26,6 +26,7 @@ ProblemCatalogController.InsertProblemCatalog = async (req, res) => {
     return res.status(500).json({ message: err.message, errorCode: err.code });
   }
 };
+
 ProblemCatalogController.UpdateProblemCatalog = async (req, res) => {
   try {
     const { problemCatalogName, problemCatalogId } = req.body;
@@ -39,6 +40,16 @@ ProblemCatalogController.UpdateProblemCatalog = async (req, res) => {
       problemCatalogId,
     ]);
     return res.status(201).json({ message: "تم تعديل تصنيف المشكلة بنجاح.!" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message, errorCode: err.code });
+  }
+};
+
+ProblemCatalogController.DeleteProblemCatalog = async (req, res) => {
+  try {
+    const { problemCatalogId } = req.query;
+    await problemCatalog.DeleteProblemCatalog([problemCatalogId]);
+    return res.status(201).json({ message: "تم حذف تصنيف المشكلة بنجاح.!" });
   } catch (err) {
     return res.status(500).json({ message: err.message, errorCode: err.code });
   }

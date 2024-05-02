@@ -13,7 +13,7 @@ const search = (e) => {
             <label class="sr-only">Search</label>
             <div class="relative w-full">
                 <input
-                    class="bg-white border text-gray-900 text-left px-2 py-1 rounded-lg font-medium focus:outline-none focus:border-indigo-300 focus:ring-1 focus:ring-indigo-300"
+                    class="bg-white border w-80 text-gray-900 text-left px-2 py-1 rounded-lg font-medium focus:outline-none focus:border-indigo-300 focus:ring-1 focus:ring-indigo-300"
                     type="text" @input="search" placeholder="search">
             </div>
         </form>

@@ -1,9 +1,10 @@
 <script setup>
 import SearchForm from "@/components/SearchForm.vue"
 import * as heroIcons from "@heroicons/vue/24/outline"
+import { ref } from "vue";
 
 
- defineProps({
+const props= defineProps({
     columns: {
         required: true
     },
@@ -20,13 +21,18 @@ import * as heroIcons from "@heroicons/vue/24/outline"
         required: false,
         default: '',
         type: String
+     },
+
+       delModalId: {
+        required: false,
+        default: '',
+        type: String
      }
-})
+ }) 
 
 const emit = defineEmits(['onEdit', 'onDelete','search'])
 
-const onEdit = (entity) => {
-    // console.log(entity)
+const onEdit = (entity) => { 
     emit('onEdit', entity);
 }
 
@@ -41,9 +47,12 @@ const handleSearch = (search) => {
 
 <template>
   <div class="relative bg-white border rounded-lg">
-    <div class="flex items-center justify-end">
+    <div class="flex items-center justify-between">
         <!-- Search Bar -->
-        <SearchForm @search="handleSearch"/>
+        <p class="font-semibold pr-4 text-gray-700" >عدد الصفوف 
+            <span>{{ entities.length }}</span>
+        </p>
+        <SearchForm @search="handleSearch"/> 
     </div>
       <table class="w-full text-sm text-right text-gray-500">
         <thead class="text-gray-900 uppercase bg-indigo-100">
@@ -72,7 +81,7 @@ const handleSearch = (search) => {
                     <button :data-hs-overlay="`${modalId}`" class="mx-3 active:bg-violet-100 h-7 w-7 rounded-full" @click="onEdit(index)">
                         <heroIcons.PencilIcon class="px-1 h-7 w-7 rounded-full border cursor-pointer text-violet-6500 border-violet-500 hover:text-violet-700 hover:border-violet-700 active:border-violet-700 active:border-2"> </heroIcons.PencilIcon>
                     </button>
-                 <button class="mx-3 active:bg-red-100 h-7 w-7 rounded-full " @click="onDelete(entity)">
+                 <button :data-hs-overlay="`${delModalId}`" class="mx-3 active:bg-red-100 h-7 w-7 rounded-full " @click="onDelete(index)">
                         <heroIcons.TrashIcon class="px-1 h-7 w-7 rounded-full border cursor-pointer text-red-500 border-red-500 hover:text-red-600 hover:border-red-600 active:border-red-700 active:border-2"> </heroIcons.TrashIcon>
                     </button>
                 </td>
