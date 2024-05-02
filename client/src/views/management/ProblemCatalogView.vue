@@ -20,7 +20,6 @@ const showModal = ref(false);
 const ProblemCatalogs = ref({});
 const problemCatalogId = ref(0);
 const problemCatalogName = ref('');
-const problemCatCount = ref(ProblemCatalogs.value.length)
 let isAdd = false;
 
 onMounted(async () => {
@@ -66,11 +65,15 @@ const handleDeleteProblemCat = async () => {
 const columns = [
     {
         key: "ProblemCatalogID",
-        label: "رقم تصنيف المشكلة"
+        label: "رقم التصنيف",
+        isBold: false,
+        isNumber: false
     },
     {
         key: "ProblemCatalogName",
-        label: "تصنيف المشكلة"
+        label: "تصنيف المشكلة",
+        isBold: true,
+        isNumber: false
     }
 ]
 
@@ -101,15 +104,19 @@ const onDelete = (index) => {
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen p-8 mt-10">
-            <div class="pb-4 pr-1">
+    <div class="min-h-screen mt-16">
+        <div class="flex items-center justify-start rounded-md mb-2  pr-12">
+            <h1 class="text-2xl leading-relaxed font-semibold text-indigo-900">تصنيف المشاكل</h1>
+        </div>
+        <div class="px-8 py-4">
+
+            <div class="flex justify-end item-center pb-4 px-1">
                 <ButtonAdd data-hs-overlay="#problem-modal" @click="showDialog('إضافة مشكلة')" />
             </div>
 
             <Teleport to="body">
                 <!-- use the modal component, pass in the prop -->
-                <modal :modalId="'#problem-modal'" id="problem-modal" :show="showModal" @close="showModal = false"
+                <modal :modalId="'#problem-modal'" id="problem-modal" @close="showModal = false"
                     @modified-data="handleProblemCat">
                     <template #title>
                         <h3 class="font-bold text-gray-800 dark:text-white">
@@ -147,7 +154,7 @@ const onDelete = (index) => {
 
             <Teleport to="body">
                 <!-- use the modal component, pass in the prop -->
-                <DeleteModal :modalId="'#delete-modal'" id="delete-modal" :show="showModal" @close="showModal = false"
+                <DeleteModal :modalId="'#delete-modal'" id="delete-modal" @close="showModal = false"
                     @delete-data="handleDeleteProblemCat">
                     <template #title>
                         <p>تأكيد الحذف</p>

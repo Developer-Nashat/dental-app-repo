@@ -12,8 +12,6 @@ onMounted(() => {
 });
 
 defineProps({
-    show: Boolean,
-
     modalId: {
         required: false,
         default: '',
