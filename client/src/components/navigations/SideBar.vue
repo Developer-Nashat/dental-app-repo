@@ -18,8 +18,8 @@ import navItems from '../../navItems';
                     enter-from="translate-x-full" enter-to="-translate-x-0"
                     leave="transaction ease-in-out duration-200 transform" leave-from="-translate-x-0"
                     leave-to="translate-x-full">
-                    <div class="relative z-10 flex flex-col h-full py-4 bg-gradient-to-t from-indigo-600
-            via-indigo-800 to-indigo-900 border-r border-indigo-300 md:hidden w-72 shrink-0">
+                    <div
+                        class="relative z-10 flex flex-col h-full py-4 border-r border-indigo-300 bg-gradient-to-t from-indigo-600 via-indigo-800 to-indigo-900 md:hidden w-72 shrink-0">
                         <button @click="sidebar.setIsOpened(false)"
                             class="absolute flex items-center justify-center w-10 h-10 rounded-full top-2 right-2 focus:outline-none focus:ring-2 focus: ring-gray-600"
                             type="button" value="Close sidebar">
@@ -49,8 +49,8 @@ import navItems from '../../navItems';
         </TransitionRoot>
 
         <!-- Desktop Sidebar -->
-        <div class="hidden w-64 py-4 bg-gradient-to-t from-indigo-600
-            via-indigo-800 to-indigo-900 border-l border-gray-600 md:block shrink-0">
+        <div
+            class="hidden w-64 py-4 border-l border-gray-600 bg-gradient-to-t from-indigo-600 via-indigo-800 to-indigo-900 md:block shrink-0">
 
             <!-- Put Logo here -->
             <div class="px-4"><router-Link class="inline-block" to="/">

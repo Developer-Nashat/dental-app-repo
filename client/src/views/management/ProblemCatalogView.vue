@@ -23,9 +23,10 @@ const problemCatalogName = ref('');
 let isAdd = false;
 
 onMounted(async () => {
-    window.HSStaticMethods.autoInit()
+    await window.HSStaticMethods.autoInit()
 
     ProblemCatalogs.value = await ProblemCatalogService.getAllProblemsCatalogs();
+    console.log(typeof ProblemCatalogs.value)
 });
 
 const showDialog = (t) => {
@@ -105,12 +106,11 @@ const onDelete = (index) => {
 
 <template>
     <div class="min-h-screen mt-16">
-        <div class="flex items-center justify-start rounded-md mb-2  pr-12">
-            <h1 class="text-2xl leading-relaxed font-semibold text-indigo-900">تصنيف المشاكل</h1>
-        </div>
         <div class="px-8 py-4">
 
-            <div class="flex justify-end item-center pb-4 px-1">
+            <div class="flex justify-between px-1 pb-4 item-center">
+                <h1 class="text-2xl font-semibold leading-relaxed text-indigo-700">تصنيف المشاكل</h1>
+
                 <ButtonAdd data-hs-overlay="#problem-modal" @click="showDialog('إضافة مشكلة')" />
             </div>
 
@@ -131,21 +131,21 @@ const onDelete = (index) => {
                                     المشكلة</label>
                                 <Field type="text" v-model="problemCatalogName" name="problemCatalogName"
                                     @keyup.enter="$emit('close')"
-                                    class="py-3 px-4 block w-full border bg-white focus:outline-none  border-indigo-300 rounded-lg text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    class="block w-full px-4 py-3 text-sm bg-white border border-indigo-300 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
                                     placeholder="تصنيف المشكلة" />
                                 <ErrorMessage name="problemCatalogName"
-                                    class="mt-2 pr-2 text-sm text-red-500 dark:text-neutral-500" />
+                                    class="pr-2 mt-2 text-sm text-red-500 dark:text-neutral-500" />
                             </Form>
                         </div>
                     </template>
                     <template #footer>
                         <button type="button" @click="$emit('close')"
-                            class=" py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-400 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-white border border-gray-400 rounded-lg shadow-sm gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                             data-hs-overlay="#problem-modal">
                             إلغاء
                         </button>
                         <button type="button" @click="handleProblemCat" data-hs-overlay="#problem-modal"
-                            class="py-2 px-8 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none">
+                            class="inline-flex items-center px-8 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-lg gap-x-2 hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none">
                             حفظ
                         </button>
                     </template>

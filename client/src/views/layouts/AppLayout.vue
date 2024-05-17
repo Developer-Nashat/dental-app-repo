@@ -10,7 +10,7 @@ import SideBar from '../../components/navigations/SideBar.vue';
         <!-- <NewSideBar /> -->
         <SideBar />
         <div class=" flex-col w-full">
-            <HeaderBar class="fixed top-0 left-0 right-0 z-50" />
+            <HeaderBar class="fixed top-0 left-0 right-0 z-20" />
             <router-view />
         </div>
     </div>

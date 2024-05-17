@@ -4,9 +4,10 @@ import * as heroIcons from "@heroicons/vue/24/outline"
 import { sidebar } from '../../stores/sidebarIsOpen';
 
 </script>
+
 <template>
     <div
-        class="flex justify-between md:justify-end px-3 items-center md:px-6 md:space-x-6 space-x-3 bg-white border-b shadow-sm h-12 mr-64">
+        class="flex justify-between md:justify-end px-3 items-center md:px-6 md:space-x-6 space-x-3 bg-white border-b shadow-sm h-14 md:mr-64">
         <button type="button" value="open Sidebar" @click="sidebar.setIsOpened(true)"
             class="flex-shrink-0 flex items-center justify-center md:hidden">
             <heroIcons.Bars3Icon class="h-6 w-6"></heroIcons.Bars3Icon>

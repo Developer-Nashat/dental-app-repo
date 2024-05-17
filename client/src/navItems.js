@@ -1,16 +1,36 @@
 const navItems = [
-  { href: '/', active: false, label: 'Home', children: [], icon: 'HomeIcon' },
+  { href: '/', active: false, label: 'Home', children: [], icon: null },
   {
     href: '#',
     active: false,
-    label: 'Posts',
+    label: 'الجانب الإداري',
     children: [
-      { href: '/about', active: false, label: 'All Posts', children: [], icon: null },
-      { href: '/problems', active: false, label: 'Add New', children: [], icon: null },
-      { href: '#', active: false, label: 'Categories', children: [], icon: null }
+      {
+        href: '#',
+        active: false,
+        label: 'الإدخالات',
+        children: [
+          {
+            href: '/problems',
+            active: false,
+            label: 'تصنيف المشاكل',
+            children: [],
+            icon: 'problem'
+          },
+          {
+            href: '/treatments',
+            active: false,
+            label: 'تصنيف العلاجات',
+            children: [],
+            icon: 'treatment'
+          }
+        ],
+        icon: 'mainEntry'
+      }
     ],
-    icon: 'NewspaperIcon'
+    icon: null
   },
+
   {
     href: '#',
     active: false,
@@ -22,10 +42,10 @@ const navItems = [
         active: false,
         label: 'Add New',
         children: [{ href: '/add', active: true, label: 'Third Level', children: [], icon: null }],
-        icon: 'HomeIcon'
+        icon: null
       }
     ],
-    icon: 'PhotoIcon'
+    icon: null
   }
 ]
 
